@@ -1,0 +1,22 @@
+# Environment and cache folders
+.venv/
+__pycache__/
+*.py[cod]
+*_cache/
+.idea/
+.env
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Python package/dist artifacts
+*.egg-info
+dist/
+
+# Coverage files
+.coverage
+coverage.xml
+
+# Testing
+.pytest_cache/
