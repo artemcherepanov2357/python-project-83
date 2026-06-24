@@ -20,3 +20,5 @@ coverage.xml
 
 # Testing
 .pytest_cache/
+
+.ruff_cache/
