@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Анализатор страниц - проверка SEO-показателей{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">Анализатор страниц</h1>
+            <p class="lead text-muted">
+                Бесплатный инструмент для SEO-анализа веб-страниц
+            </p>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-4 p-md-5">
+                <form action="{{ url_for('post_url') }}" method="post" class="row g-3">
+                    <div class="col-12">
+                        <label for="url" class="form-label visually-hidden">URL для анализа</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-link-45deg" viewBox="0 0 16 16">
+                                    <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+                                </svg>
+                            </span>
+                            <input
+                                type="url"
+                                name="url"
+                                id="url"
+                                class="form-control"
+                                placeholder="https://example.com"
+                                value="{{ url_input or '' }}"
+                                required
+                                pattern="https?://.+"
+                                title="Введите корректный URL (начинающийся с http:// или https://)"
+                            >
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                Проверить
+                            </button>
+                        </div>
+                        <div class="form-text text-muted mt-2">
+                            Введите URL в формате <code>https://example.com</code>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Подсказки для пользователя -->
+                <div class="row mt-5 g-3">
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-primary bg-opacity-10 p-3 rounded-circle">
+                                    <span class="text-primary">1</span>
+                                </span>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-0">Введите URL</h6>
+                                <small class="text-muted">Любой сайт в интернете</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-success bg-opacity-10 p-3 rounded-circle">
+                                    <span class="text-success">2</span>
+                                </span>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-0">Анализ</h6>
+                                <small class="text-muted">SEO-показатели страницы</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-info bg-opacity-10 p-3 rounded-circle">
+                                    <span class="text-info">3</span>
+                                </span>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-0">Результат</h6>
+                                <small class="text-muted">Готовый отчет по сайту</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Дополнительная информация -->
+        <div class="text-center mt-5 text-muted">
+            <small>
+                Анализ включает: заголовки, мета-описания, H1, статус-коды и многое другое
+            </small>
+        </div>
+    </div>
+</div>
+{% endblock %}
