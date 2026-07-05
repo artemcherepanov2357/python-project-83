@@ -22,3 +22,9 @@ clean:
 	rm -rf .pytest_cache
 	rm -rf page_analyzer/__pycache__
 	rm -rf .ruff_cache
+
+db-init:  ## Создать таблицы в локальной БД
+	psql -d $(DATABASE_URL) -f database.sql
+
+db-drop:  ## Удалить таблицы из локальной БД
+	psql -d $(DATABASE_URL) -c "DROP TABLE IF EXISTS urls CASCADE"

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}{{ url[1] }} - Анализ страницы{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="h2 mb-4">{{ url[1] }}</h1>
+
+        <div class="card mb-4" data-test="url">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="card-title text-muted">Информация о сайте</h5>
+                        <ul class="list-unstyled">
+                            <li><strong>ID:</strong> {{ url[0] }}</li>
+                            <li><strong>Дата добавления:</strong> {{ url[2].strftime('%Y-%m-%d %H:%M') }}</li>
+                            <li><strong>Всего проверок:</strong> {{ checks|length if checks else 0 }}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <form action="{{ url_for('check_url', id=url[0]) }}" method="post">
+                            <button type="submit" class="btn btn-primary w-100">
+                                Запустить проверку
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="h4 mb-3">Результаты проверок</h3>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Код ответа</th>
+                        <th scope="col">h1</th>
+                        <th scope="col">title</th>
+                        <th scope="col">description</th>
+                        <th scope="col">Дата проверки</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if checks %}
+                        {% for check in checks %}
+                            <tr>
+                                <td>{{ check[0] }}</td>
+                                <td>
+                                    <span class="badge {% if check[2] == 200 %}bg-success{% elif check[2] >= 400 %}bg-danger{% else %}bg-warning{% endif %}">
+                                        {{ check[2] }}
+                                    </span>
+                                </td>
+                                <td>{{ check[3] or '-' }}</td>
+                                <td>{{ check[4] or '-' }}</td>
+                                <td>{{ check[5] or '-' }}</td>
+                                <td>{{ check[1].strftime('%Y-%m-%d %H:%M') if check[1] else '-' }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                Проверок пока нет
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-3">
+            <a href="{{ url_for('show_urls') }}" class="btn btn-outline-secondary">
+                ← Все сайты
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
