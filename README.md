@@ -3,17 +3,14 @@
 ## Статус:
 [![Actions Status](https://github.com/artemcherepanov2357/python-project-83/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/artemcherepanov2357/python-project-83/actions)
 
----
 
 ## Демо:
 [Посмотреть на Render.com](https://python-project-83-2enb.onrender.com/)
 
----
 
 ## Описание:
 **Анализатор страниц** – это веб-приложение, разработанное с использованием Flask, которое позволяет пользователям быстро и бесплатно проверять веб-сайты на SEO-пригодность.
 
----
 
 ## Установка:
 ### Клонируем репозиторий
