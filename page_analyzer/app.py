@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 import validators
 from page_analyzer.analyzer import analyze_url
+from page_analyzer.db import init_db
 
 from page_analyzer.db import (
     add_url,
@@ -18,6 +19,16 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
+
+# Создаем таблицы при первом запросе, а не при импорте
+_tables_created = False
+
+@app.before_request
+def create_tables():
+    global _tables_created
+    if not _tables_created:
+        init_db()
+        _tables_created = True
 
 
 def normalize_url(url):

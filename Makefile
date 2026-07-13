@@ -23,6 +23,8 @@ clean:
 	rm -rf page_analyzer/__pycache__
 	rm -rf .ruff_cache
 
+
+
 db-init:  ## Создать таблицы в локальной БД
 	psql -d $(DATABASE_URL) -f database.sql
 

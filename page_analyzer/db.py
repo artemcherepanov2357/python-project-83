@@ -10,6 +10,46 @@ load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 
+def init_db():
+    """Создание таблиц при запуске приложения"""
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            # Проверяем, существует ли таблица urls
+            cur.execute("""
+                SELECT EXISTS (
+                    SELECT FROM information_schema.tables 
+                    WHERE table_name = 'urls'
+                );
+            """)
+            table_exists = cur.fetchone()[0]
+
+            if not table_exists:
+                print("📦 Создание таблиц базы данных...")
+                cur.execute("""
+                    CREATE TABLE urls (
+                        id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                        name VARCHAR(255) UNIQUE NOT NULL,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    );
+                """)
+                cur.execute("""
+                    CREATE TABLE url_checks (
+                        id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                        url_id BIGINT REFERENCES urls(id) ON DELETE CASCADE,
+                        status_code INTEGER,
+                        h1 VARCHAR(255),
+                        title VARCHAR(255),
+                        description TEXT,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    );
+                """)
+                cur.execute("CREATE INDEX idx_url_checks_url_id ON url_checks(url_id);")
+                cur.execute("CREATE INDEX idx_urls_name ON urls(name);")
+                conn.commit()
+                print("✅ Таблицы созданы успешно!")
+            else:
+                print("✅ Таблицы уже существуют")
+
 def get_connection():
     """Получение соединения с БД"""
     return psycopg.connect(DATABASE_URL)
