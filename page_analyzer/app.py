@@ -37,7 +37,7 @@ def ensure_db_initialized():
             print(f"❌ Критическая ошибка при инициализации БД: {e}")
             # Не поднимаем исключение, чтобы приложение не падало при ошибке БД
             # _db_initialized остается False, чтобы попробовать снова при следующем запросе
-            
+
 
 def normalize_url(url):
     """Нормализация URL (удаление протокола и приведение к единому виду)"""
@@ -120,7 +120,7 @@ def check_url(id):
 
     url_data = get_url_by_id(id)
     if not url_data:
-        flash('Страница не найдена', 'danger')
+        flash('Произошла ошибка при проверке', 'danger')
         return redirect(url_for('index'))
 
     try:
