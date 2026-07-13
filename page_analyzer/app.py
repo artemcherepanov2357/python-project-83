@@ -139,6 +139,14 @@ def check_url(id):
 
     return redirect(url_for('show_url', id=id))
 
+@app.template_filter('truncate')
+def truncate_filter(text, length=200, suffix='...'):
+    if not text:
+        return ''
+    if len(text) <= length:
+        return text
+    return text[:length] + suffix
+
 
 @app.route('/health')
 def health():

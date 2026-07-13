@@ -50,12 +50,12 @@
                                 <td>{{ check[0] }}</td>
                                 <td>
                                     <span class="badge {% if check[2] == 200 %}bg-success{% elif check[2] >= 400 %}bg-danger{% else %}bg-warning{% endif %}">
-                                        {{ check[2] }}
+                                         {{ check[2] or '-' }}
                                     </span>
                                 </td>
-                                <td>{{ check[3] or '-' }}</td>
-                                <td>{{ check[4] or '-' }}</td>
-                                <td>{{ check[5] or '-' }}</td>
+                                <td>{{ (check[3] or '-') | truncate(200) }}</td>
+                                <td>{{ (check[4] or '-') | truncate(200) }}</td>
+                                <td>{{ (check[5] or '-') | truncate(200) }}</td>
                                 <td>{{ check[1].strftime('%Y-%m-%d %H:%M') if check[1] else '-' }}</td>
                             </tr>
                         {% endfor %}
