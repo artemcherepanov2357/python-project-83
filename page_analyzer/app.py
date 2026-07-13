@@ -20,16 +20,24 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
 
-# Создаем таблицы при первом запросе, а не при импорте
-_tables_created = False
+# Флаг, чтобы не пытаться инициализировать БД при каждом запросе
+_db_initialized = False
 
-@app.before_request
-def create_tables():
-    global _tables_created
-    if not _tables_created:
-        init_db()
-        _tables_created = True
 
+def ensure_db_initialized():
+    """Проверяет и инициализирует базу данных, если это еще не сделано."""
+    global _db_initialized
+    if not _db_initialized:
+        try:
+            print("🔄 Проверка и инициализация базы данных...")
+            init_db()  # Эта функция из db.py сама проверит существование таблиц
+            _db_initialized = True
+            print("✅ База данных готова.")
+        except Exception as e:
+            print(f"❌ Критическая ошибка при инициализации БД: {e}")
+            # Не поднимаем исключение, чтобы приложение не падало при ошибке БД
+            # _db_initialized остается False, чтобы попробовать снова при следующем запросе
+            
 
 def normalize_url(url):
     """Нормализация URL (удаление протокола и приведение к единому виду)"""
