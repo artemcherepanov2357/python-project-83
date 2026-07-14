@@ -5,7 +5,7 @@ dev:
 	uv run flask --debug --app page_analyzer:app run
 
 lint:
-	uv run flake8 page_analyzer/
+	uv run flake8 --max-line-length=120 page_analyzer/
 
 PORT ?= 8000
 start:

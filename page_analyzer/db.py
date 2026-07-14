@@ -1,13 +1,13 @@
 """Модуль для работы с базой данных"""
+
 import os
 import psycopg
-from psycopg import sql
 from dotenv import load_dotenv
 from datetime import datetime
 
 load_dotenv()
 
-DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 def init_db():
@@ -17,7 +17,7 @@ def init_db():
             # Проверяем, существует ли таблица urls
             cur.execute("""
                 SELECT EXISTS (
-                    SELECT FROM information_schema.tables 
+                    SELECT FROM information_schema.tables
                     WHERE table_name = 'urls'
                 );
             """)
@@ -50,6 +50,7 @@ def init_db():
             else:
                 print("✅ Таблицы уже существуют")
 
+
 def get_connection():
     """Получение соединения с БД"""
     return psycopg.connect(DATABASE_URL)
@@ -60,7 +61,7 @@ def get_all_urls():
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT 
+                SELECT
                     urls.id,
                     urls.name,
                     urls.created_at,
@@ -79,8 +80,7 @@ def get_url_by_id(url_id):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                "SELECT id, name, created_at FROM urls WHERE id = %s",
-                (url_id,)
+                "SELECT id, name, created_at FROM urls WHERE id = %s", (url_id,)
             )
             return cur.fetchone()
 
@@ -90,8 +90,7 @@ def get_url_by_name(name):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                "SELECT id, name, created_at FROM urls WHERE name = %s",
-                (name,)
+                "SELECT id, name, created_at FROM urls WHERE name = %s", (name,)
             )
             return cur.fetchone()
 
@@ -107,7 +106,7 @@ def add_url(name):
                 VALUES (%s, %s)
                 RETURNING id
                 """,
-                (name, created_at)
+                (name, created_at),
             )
             url_id = cur.fetchone()[0]
             conn.commit()
@@ -118,8 +117,9 @@ def get_url_checks(url_id):
     """Получение всех проверок для URL"""
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("""
-                SELECT 
+            cur.execute(
+                """
+                SELECT
                     id,
                     created_at,
                     status_code,
@@ -129,7 +129,9 @@ def get_url_checks(url_id):
                 FROM url_checks
                 WHERE url_id = %s
                 ORDER BY id DESC
-            """, (url_id,))
+            """,
+                (url_id,),
+            )
             return cur.fetchall()
 
 
@@ -150,6 +152,6 @@ def add_url_check(url_id, status_code, h1, title, description):
                 )
                 VALUES (%s, %s, %s, %s, %s, %s)
                 """,
-                (url_id, created_at, status_code, h1, title, description)
+                (url_id, created_at, status_code, h1, title, description),
             )
             conn.commit()
