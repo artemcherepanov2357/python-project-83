@@ -138,8 +138,8 @@ def check_url(id):
             result["description"],
         )
         flash("Страница успешно проверена", "success")
-    except Exception as e:
-        flash(f"Ошибка при проверке: {str(e)}", "danger")
+    except Exception:
+        flash("Произошла ошибка при проверке", "danger")
 
     return redirect(url_for("show_url", id=id))
 

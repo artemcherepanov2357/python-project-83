@@ -2,7 +2,7 @@
 
 import requests
 import bs4
-from requests import ConnectionError, HTTPError
+from requests import ConnectionError, HTTPError, RequestException
 
 
 def analyze_url(url):
@@ -29,5 +29,5 @@ def analyze_url(url):
             "description": description[:255] if description else "",
         }
 
-    except (ConnectionError, HTTPError, requests.RequestException) as e:
-        raise Exception(f"Ошибка при анализе страницы: {str(e)}")
+    except RequestException as e:
+        raise Exception(str(e))
