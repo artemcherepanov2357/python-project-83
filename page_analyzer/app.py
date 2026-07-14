@@ -90,16 +90,20 @@ def post_url():
         url_id = add_url(normalized_url)
         flash("Страница успешно добавлена", "success")
         return redirect(url_for("show_url", id=url_id))
-    except Exception as e:
-        flash(f"Ошибка при добавлении: {str(e)}", "danger")
+    except Exception:
+        flash("Произошла ошибка при проверке", "danger")
         return render_template("index.html", url_input=url), 500
 
 
 @app.route("/urls")
 def show_urls():
     """Список всех URL"""
-    urls = get_all_urls()
-    return render_template("urls.html", urls=urls)
+    try:
+        urls = get_all_urls()
+        return render_template("urls.html", urls=urls)
+    except Exception:
+        flash("Произошла ошибка при проверке", "danger")
+        return render_template("urls.html", urls=[])
 
 
 @app.route("/urls/<int:id>")
@@ -120,7 +124,7 @@ def check_url(id):
 
     url_data = get_url_by_id(id)
     if not url_data:
-        flash("Произошла ошибка при проверке", "danger")
+        flash("Страница не найдена", "danger")
         return redirect(url_for("index"))
 
     try:
