@@ -2,20 +2,21 @@
 
 import requests
 import bs4
-from requests import ConnectionError, HTTPError, RequestException
+from requests import RequestException
 
 
 def analyze_url(url):
-    """Анализ URL: получение status_code, h1, title, description"""
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
 
         soup = bs4.BeautifulSoup(response.text, "html.parser")
 
-        # Извлечение данных
-        h1 = soup.find("h1").get_text().strip() if soup.find("h1") else ""
-        title = soup.find("title").get_text().strip() if soup.find("title") else ""
+        h1_tag = soup.find("h1")
+        h1 = h1_tag.get_text().strip() if h1_tag else ""
+
+        title_tag = soup.find("title")
+        title = title_tag.get_text().strip() if title_tag else ""
 
         description = ""
         meta_desc = soup.find("meta", attrs={"name": "description"})
@@ -24,10 +25,11 @@ def analyze_url(url):
 
         return {
             "status_code": response.status_code,
-            "h1": h1[:255] if h1 else "",  # Ограничиваем длину
+            "h1": h1[:255] if h1 else "",
             "title": title[:255] if title else "",
             "description": description[:255] if description else "",
         }
 
     except RequestException as e:
+        print(f"❌ Ошибка: {e}")
         raise Exception(str(e))
